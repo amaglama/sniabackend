@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Observación en su Registro</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; background-color: #f9f9f9; margin: 0; padding: 20px;">
+    <div style="max-width: 600px; margin: 0 auto; padding: 20px; background: #ffffff; border: 1px solid #e0e0e0; border-radius: 5px;">
+        <h1 style="text-align: center; color: #e74c3c;">Observación en su registro</h1>
+        <p>Estimado/a <strong>{{ consultant }}</strong>,</p>
+        <p>Lamentamos informarle que su inscripción al <strong>Registro Nacional de Consultoría Ambiental (SNIA)</strong> no pudo ser completada.</p>
+        <p><strong>Categoría solicitada:</strong> {{ category }}</p>
+        <p><strong>Razón del rechazo:</strong> {{ rejection_reason }}</p>
+        <p>
+            Por favor, revise los documentos enviados y realice las correcciones necesarias. 
+            Para más detalles, puede comunicarse con nuestras oficinas.
+        </p>
+        <p>Atentamente,<br><strong>SNIA - Ministerio de Medio Ambiente y Agua</strong></p>
+        <p style="text-align: center; color: #2c3e50; font-weight: bold;">¡No necesita responder este mensaje. Gracias!</p>
+    </div>
+</body>
+</html>
