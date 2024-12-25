@@ -7,6 +7,7 @@ from rest_framework.exceptions import NotFound
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
+from rest_framework.parsers import MultiPartParser, FormParser
 
 
 # Create your views here.
@@ -15,6 +16,15 @@ from django.shortcuts import get_object_or_404
 class AnnouncementCreateAPIView(generics.ListCreateAPIView):
     queryset = Announcement.objects.filter(is_deleted=False)
     serializer_class = Serializer
+    parser_classes = (MultiPartParser, FormParser)
+
+    def post(self, request, *args, **kwargs):
+        serializer = Serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 
     def get(self, request, *args, **kwargs):
         records = self.get_queryset()

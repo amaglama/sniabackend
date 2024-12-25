@@ -1,6 +1,10 @@
 from django.db import models
 
 class Announcement(models.Model):
+    file = models.FileField(upload_to='uploads/announcements/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    
     module = models.CharField(max_length=50)
     type = models.CharField(max_length=50)
     title = models.CharField(max_length=200)
