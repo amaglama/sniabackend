@@ -76,7 +76,7 @@ urlpatterns = [
     path('api/',include('consultants_renca.urls')),
     path('api/',include('announcements.urls')),
 
-    ]#+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     urlpatterns += [
