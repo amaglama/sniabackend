@@ -19,6 +19,8 @@ class AnnouncementCreateAPIView(generics.ListCreateAPIView):
     parser_classes = (MultiPartParser, FormParser)
 
     def post(self, request, *args, **kwargs):
+        filename = request.data.get('file')
+        request.data['filename'] = filename.name
         serializer = Serializer(data=request.data)
         if serializer.is_valid():
             serializer.save()

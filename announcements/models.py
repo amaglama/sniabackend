@@ -3,7 +3,7 @@ from django.db import models
 class Announcement(models.Model):
     file = models.FileField(upload_to='uploads/announcements/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
-
+    filename = models.CharField(max_length=100)
     
     module = models.CharField(max_length=50)
     type = models.CharField(max_length=50)
