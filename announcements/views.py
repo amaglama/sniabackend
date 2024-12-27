@@ -8,13 +8,26 @@ from rest_framework.generics import RetrieveAPIView
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from rest_framework.parsers import MultiPartParser, FormParser
+from django.db.models import OuterRef, Subquery, Value, CharField, BigIntegerField
+from django.db.models.functions import Cast
 
 
 # Create your views here.
 
 
 class AnnouncementCreateAPIView(generics.ListCreateAPIView):
-    queryset = Announcement.objects.filter(is_deleted=False)
+    queryset = Announcement.objects.filter(is_deleted=False).annotate(
+    module_name=Subquery(
+        AnnouncementModule.objects.filter(
+            id=Cast(OuterRef('id_module'), output_field=BigIntegerField())
+        ).values('name')[:1]
+    ),
+    type_name=Subquery(
+        AnnouncementType.objects.filter(
+            id=Cast(OuterRef('id_type'), output_field=BigIntegerField())
+        ).values('name')[:1]
+    )
+)
     serializer_class = SerializerAnnouncement
     parser_classes = (MultiPartParser, FormParser)
 

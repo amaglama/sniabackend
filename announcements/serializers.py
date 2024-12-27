@@ -2,6 +2,8 @@ from rest_framework import serializers
 from .models import Announcement, AnnouncementType, AnnouncementModule
 
 class SerializerAnnouncement(serializers.ModelSerializer):
+    module_name = serializers.CharField(read_only=True)
+    type_name = serializers.CharField(read_only=True)
     class Meta:
         model = Announcement
         fields = '__all__'
