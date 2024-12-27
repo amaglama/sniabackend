@@ -42,7 +42,7 @@ class AnnouncementCreateAPIView(generics.ListCreateAPIView):
     
 
     def get(self, request, *args, **kwargs):
-        records = self.get_queryset()
+        records = self.get_queryset().order_by('-created_at')
         serializer = SerializerAnnouncement(records, many=True)
         return Response(serializer.data)
     
@@ -84,19 +84,19 @@ class Delete(APIView):
     
 class FilterByModuleandType(APIView):
     def get(self, request, id_module, id_type):
-        records = Announcement.objects.filter(id_module=id_module, id_type=id_type, is_deleted=False)
+        records = Announcement.objects.filter(id_module=id_module, id_type=id_type, is_deleted=False).order_by('-created_at')
         serializer = SerializerAnnouncement(records, many=True)
         return Response(serializer.data)
     
 class ModuleList(APIView):
     def get(self, request, *args, **kwargs):
-        records = AnnouncementModule.objects.filter(is_deleted=False)
+        records = AnnouncementModule.objects.filter(is_deleted=False).order_by('-created_at')
         serializer = SerializerAnnouncementModule(records, many=True)
         return Response(serializer.data)
     
 
 class TypeList(APIView):
     def get(self, request, *args, **kwargs):
-        records = AnnouncementType.objects.filter(is_deleted=False)
+        records = AnnouncementType.objects.filter(is_deleted=False).order_by('-created_at')
         serializer = SerializerAnnouncementType(records, many=True)
         return Response(serializer.data)
