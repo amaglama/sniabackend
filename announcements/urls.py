@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import AnnouncementCreateAPIView, AnnouncementUpdateAPIView, Getbyid, Delete, FilterByModuleandType
+from .views import AnnouncementCreateAPIView, AnnouncementUpdateAPIView, Getbyid, Delete, FilterByModuleandType,  ModuleList, TypeList
 
 
 urlpatterns = [
@@ -7,5 +7,7 @@ urlpatterns = [
     path('announcements/list/<int:pk>', Getbyid.as_view(), name='listbyid'),
     path('announcements/delete/<int:pk>', Delete.as_view(), name='delete'),
     path('announcements/edit/<int:pk>', AnnouncementUpdateAPIView.as_view(), name='announcement-edit'),
-    path('announcements/filter/<str:module>/<str:type>',FilterByModuleandType.as_view(), name='filter'),
+    path('announcements/filter/<int:id_module>/<int:id_type>',FilterByModuleandType.as_view(), name='filter'),
+    path('announcements/moduleList', ModuleList.as_view(), name='module-list'),
+    path('announcements/typeList', TypeList.as_view(), name='type-list'),
 ]

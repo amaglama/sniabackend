@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .serializers import Serializer
-from .models import Announcement
+from .serializers import SerializerAnnouncement, SerializerAnnouncementModule, SerializerAnnouncementType
+from .models import Announcement, AnnouncementType, AnnouncementModule
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.exceptions import NotFound
@@ -15,13 +15,13 @@ from rest_framework.parsers import MultiPartParser, FormParser
 
 class AnnouncementCreateAPIView(generics.ListCreateAPIView):
     queryset = Announcement.objects.filter(is_deleted=False)
-    serializer_class = Serializer
+    serializer_class = SerializerAnnouncement
     parser_classes = (MultiPartParser, FormParser)
 
     def post(self, request, *args, **kwargs):
         filename = request.data.get('file')
         request.data['filename'] = filename.name
-        serializer = Serializer(data=request.data)
+        serializer = SerializerAnnouncement(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -30,7 +30,7 @@ class AnnouncementCreateAPIView(generics.ListCreateAPIView):
 
     def get(self, request, *args, **kwargs):
         records = self.get_queryset()
-        serializer = Serializer(records, many=True)
+        serializer = SerializerAnnouncement(records, many=True)
         return Response(serializer.data)
     
 class AnnouncementUpdateAPIView(APIView):
@@ -42,7 +42,7 @@ class AnnouncementUpdateAPIView(APIView):
     def put(self, request, pk, *args, **kwargs):
         """Update a specific ConsultantExperience by ID."""
         records = self.get_object(pk)
-        serializer = Serializer(records, data=request.data, partial=True)
+        serializer = SerializerAnnouncement(records, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
@@ -50,7 +50,7 @@ class AnnouncementUpdateAPIView(APIView):
 
 class Getbyid(RetrieveAPIView):
     queryset = Announcement.objects.filter(is_deleted=False)
-    serializer_class = Serializer
+    serializer_class = SerializerAnnouncement
 
     def get_object(self):
         try:
@@ -70,7 +70,20 @@ class Delete(APIView):
         return Response({"message": "Record deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
     
 class FilterByModuleandType(APIView):
-    def get(self, request, module, type):
-        records = Announcement.objects.filter(module=module, type=type, is_deleted=False)
-        serializer = Serializer(records, many=True)
+    def get(self, request, id_module, id_type):
+        records = Announcement.objects.filter(id_module=id_module, id_type=id_type, is_deleted=False)
+        serializer = SerializerAnnouncement(records, many=True)
+        return Response(serializer.data)
+    
+class ModuleList(APIView):
+    def get(self, request, *args, **kwargs):
+        records = AnnouncementModule.objects.filter(is_deleted=False)
+        serializer = SerializerAnnouncementModule(records, many=True)
+        return Response(serializer.data)
+    
+
+class TypeList(APIView):
+    def get(self, request, *args, **kwargs):
+        records = AnnouncementType.objects.filter(is_deleted=False)
+        serializer = SerializerAnnouncementType(records, many=True)
         return Response(serializer.data)
