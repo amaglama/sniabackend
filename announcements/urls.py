@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import AnnouncementCreateAPIView, AnnouncementUpdateAPIView, Getbyid, Delete, FilterByModuleandType,  ModuleList, TypeList
+from .views import AnnouncementCreateAPIView, AnnouncementUpdateAPIView, Getbyid, Delete, FilterByModuleandType,  ModuleList, TypeList, Download
 
 
 urlpatterns = [
@@ -10,4 +10,5 @@ urlpatterns = [
     path('announcements/filter/<int:id_module>/<int:id_type>',FilterByModuleandType.as_view(), name='filter'),
     path('announcements/moduleList', ModuleList.as_view(), name='module-list'),
     path('announcements/typeList', TypeList.as_view(), name='type-list'),
+    path('announcements/download/<str:document_name>', Download.as_view(), name='download_document'),
 ]

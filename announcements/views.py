@@ -10,7 +10,9 @@ from django.shortcuts import get_object_or_404
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.db.models import OuterRef, Subquery, Value, CharField, BigIntegerField
 from django.db.models.functions import Cast
-
+from django.http import FileResponse
+from django.conf import settings
+import os
 
 # Create your views here.
 
@@ -100,3 +102,13 @@ class TypeList(APIView):
         records = AnnouncementType.objects.filter(is_deleted=False).order_by('-created_at')
         serializer = SerializerAnnouncementType(records, many=True)
         return Response(serializer.data)
+
+class Download(APIView):
+    def get(self, request, document_name):
+        file_path = os.path.join(settings.MEDIA_ROOT+'/uploads/announcements/', document_name)
+        if os.path.exists(file_path):
+            return FileResponse(open(file_path, 'rb'), as_attachment=True, filename=document_name)
+        else:
+            from django.http import Http404
+            raise Http404("Archivo no encontrado")
+        #return Response(settings.MEDIA_ROOT + '/uploads/announcements/'+document_name)
